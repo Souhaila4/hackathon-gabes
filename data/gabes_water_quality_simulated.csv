@@ -1,0 +1,41 @@
+date,zone_name,latitude,longitude,CHL,TUR,SPM,data_source,risk_score,risk_level,color,advice_fr,advice_ar,risk_notes
+2026-04-11,Zone GCT Ghannouch,33.88,10.09,7.27,13.27,18.27,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-11,Port de Gabès,33.89,10.11,5.44,9.44,13.94,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-11,Chott Essalem,33.87,10.08,6.36,11.36,16.36,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-11,Zone Agricole Nord,33.95,10.07,2.7,4.2,6.2,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-11,Plage de Gabès,33.9,10.12,4.09,7.09,10.59,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-12,Zone GCT Ghannouch,33.88,10.09,7.48,13.48,18.48,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-12,Port de Gabès,33.89,10.11,5.76,9.76,14.26,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-12,Chott Essalem,33.87,10.08,6.29,11.29,16.29,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-12,Zone Agricole Nord,33.95,10.07,2.13,3.63,5.63,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-12,Plage de Gabès,33.9,10.12,4.45,7.45,10.95,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-13,Zone GCT Ghannouch,33.88,10.09,6.87,12.87,17.87,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-13,Port de Gabès,33.89,10.11,5.93,9.93,14.43,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-13,Chott Essalem,33.87,10.08,6.14,11.14,16.14,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-13,Zone Agricole Nord,33.95,10.07,2.82,4.32,6.32,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-13,Plage de Gabès,33.9,10.12,4.44,7.44,10.94,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-14,Zone GCT Ghannouch,33.88,10.09,6.73,12.73,17.73,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-14,Port de Gabès,33.89,10.11,5.55,9.55,14.05,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-14,Chott Essalem,33.87,10.08,5.56,10.56,15.56,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-14,Zone Agricole Nord,33.95,10.07,2.83,4.33,6.33,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-14,Plage de Gabès,33.9,10.12,4.63,7.63,11.13,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-15,Zone GCT Ghannouch,33.88,10.09,7.26,13.26,18.26,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-15,Port de Gabès,33.89,10.11,5.35,9.35,13.85,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-15,Chott Essalem,33.87,10.08,6.47,11.47,16.47,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-15,Zone Agricole Nord,33.95,10.07,2.89,4.39,6.39,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-15,Plage de Gabès,33.9,10.12,4.78,7.78,11.28,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-16,Zone GCT Ghannouch,33.88,10.09,6.69,12.69,17.69,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-16,Port de Gabès,33.89,10.11,5.47,9.47,13.97,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-16,Chott Essalem,33.87,10.08,5.54,10.54,15.54,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-16,Zone Agricole Nord,33.95,10.07,2.15,3.65,5.65,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-16,Plage de Gabès,33.9,10.12,4.68,7.68,11.18,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-17,Zone GCT Ghannouch,33.88,10.09,7.24,13.24,18.24,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-17,Port de Gabès,33.89,10.11,5.97,9.97,14.47,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-17,Chott Essalem,33.87,10.08,5.83,10.83,15.83,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-17,Zone Agricole Nord,33.95,10.07,2.37,3.87,5.87,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-17,Plage de Gabès,33.9,10.12,4.47,7.47,10.97,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
+2026-04-18,Zone GCT Ghannouch,33.88,10.09,6.69,12.69,17.69,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-18,Port de Gabès,33.89,10.11,5.13,9.13,13.63,simulated,60,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; Moderate turbidity
+2026-04-18,Chott Essalem,33.87,10.08,5.98,10.98,15.98,simulated,100,CONTAMINATED,red,Ne pas utiliser cette eau,لا تستخدم هذا الماء,High chlorophyll — phosphate contamination; High turbidity — industrial discharge; High suspended matter
+2026-04-18,Zone Agricole Nord,33.95,10.07,2.23,3.73,5.73,simulated,0,CLEAN,green,Eau utilisable normalement,الماء صالح للاستخدام,
+2026-04-18,Plage de Gabès,33.9,10.12,4.67,7.67,11.17,simulated,40,SUSPECT,orange,Utiliser avec précaution,استخدم بحذر,Moderate chlorophyll; Moderate turbidity
