@@ -5,8 +5,3 @@ pymongo>=4.6.0
 requests>=2.31.0
 python-dotenv>=1.0.0
 flasgger>=0.9.7
-
-# Package modèle (dossier frère ``../phosalert-model``). Depuis phosalert-backend :
-#   pip install -e ../phosalert-model
-# Script Copernicus ``scripts/fetch_gabes_water.py`` (optionnel)
--r requirements/gabes-water.txt
