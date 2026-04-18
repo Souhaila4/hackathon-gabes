@@ -8,11 +8,8 @@ Documentation détaillée du travail réalisé : **[DOCUMENTATION_TRAVAIL.md](./
 
 - Python 3.10+
 - MongoDB (utilisateurs)
-- Package modèle (dossier voisin) :
 
-```bash
-pip install -e ../phosalert-model
-```
+Le scoring / heuristiques sont fournis par le package **`phosalert_model/`** à la racine de ce dépôt (aucun `pip install -e` requis ; `app.py` ajoute la racine au `sys.path` pour les PaaS type Railway).
 
 ## Installation
 

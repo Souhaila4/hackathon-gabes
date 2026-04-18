@@ -7,7 +7,7 @@ Architecture MVVM (adaptée REST) :
 - **Model** : ``models/`` (constantes métier)
 - **Repository** : ``repositories/`` (MongoDB)
 - **Services** : ``services/`` (Open-Meteo, etc.)
-- **Modèle ML** : package installé depuis le dossier voisin ``../phosalert-model`` (déployable sur Hugging Face) ; **aucun** code modèle dans ce dépôt
+- **Modèle ML** : package **``phosalert_model/``** à la racine du dépôt (vendorisé, import direct sans ``pip install -e``)
 - **Swagger** : UI ``/apidocs/`` — spec JSON ``/apispec_1.json`` (voir ``presentation/swagger.py``)
 - **Infrastructure** : ``core/extensions.py`` (MongoDB, JWT)
 """
@@ -15,7 +15,14 @@ Architecture MVVM (adaptée REST) :
 from __future__ import annotations
 
 import os
+import sys
 from datetime import timedelta
+from pathlib import Path
+
+# Répertoire du projet en tête du PYTHONPATH (Railway / Gunicorn : CWD parfois différent)
+_PROJECT_ROOT = Path(__file__).resolve().parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request

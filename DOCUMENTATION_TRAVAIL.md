@@ -67,10 +67,11 @@ Fichier : `models/user_roles.py`.
 
 ---
 
-## 6. Séparation backend / modèle ML
+## 6. Backend / modèle ML (`phosalert_model` vendorisé)
 
-- Le **package Python `phosalert_model`** vit dans le dossier voisin **`phosalert-model/`** (installable avec `pip install -e ../phosalert-model`).
-- Le backend importe uniquement `import phosalert_model` pour scores, géodésie, simulations, etc.
+- Le **package Python `phosalert_model`** est présent **dans ce dépôt** sous **`phosalert_model/`** (à la racine du backend), sans chemin externe ni `pip install -e`.
+- `app.py` préfixe `sys.path` avec la racine du projet pour que l’import fonctionne sur Railway / Gunicorn même si le répertoire de travail diffère.
+- Le backend utilise `import phosalert_model` pour scores, géodésie, simulations, etc.
 - **Façade unique** : `phosalert_model/api.py`.
 - **Heuristiques** : `phosalert_model/heuristics.py` (baseline sans fichier entraîné).
 - **Modèles entraînés** :
@@ -86,7 +87,7 @@ Fichier : `models/user_roles.py`.
 | Élément | Emplacement |
 |---------|-------------|
 | Point d’entrée Flask | `app.py` (racine) |
-| Dépendances | `requirements.txt`, `requirements/gabes-water.txt` |
+| Dépendances | `requirements.txt` (optionnel : `requirements/gabes-water.txt` pour le script Copernicus seul) |
 | Infrastructure | `core/` |
 | Swagger | `presentation/` |
 | Script Copernicus (hors API) | `scripts/fetch_gabes_water.py` |
@@ -149,23 +150,19 @@ Fichier : `models/user_roles.py`.
 - Dépôt : **[hackathon-gabes](https://github.com/Souhaila4/hackathon-gabes)**.
 - Branche poussée pour le backend : **`backend`**.
 - URL de la branche : [https://github.com/Souhaila4/hackathon-gabes/tree/backend](https://github.com/Souhaila4/hackathon-gabes/tree/backend).
-- Le dossier **`phosalert-model`** peut être cloné à côté ou publié séparément (ex. Hugging Face).
+- Le code du modèle / heuristiques est versionné dans **`phosalert_model/`** sur ce dépôt.
 
 ---
 
 ## 13. Installation et exécution
 
-1. Cloner le repo, branche `backend`.
-2. Installer le package modèle :
-   ```bash
-   pip install -e ../phosalert-model
-   ```
-3. Depuis `phosalert-backend` :
+1. Cloner le repo (ex. branche `main` ou `backend`).
+2. Depuis `phosalert-backend` :
    ```bash
    pip install -r requirements.txt
    ```
-4. Copier `.env.example` vers `.env` si présent, et renseigner secrets (JWT, MongoDB, clés API, URLs HF si besoin).
-5. Lancer :
+3. Copier `.env.example` vers `.env` si présent, et renseigner secrets (JWT, MongoDB, clés API, URLs HF si besoin).
+4. Lancer :
    ```bash
    python app.py
    ```
@@ -207,7 +204,7 @@ python services/dashboard_service.py
 1. API Flask (air, eau, carte, prédiction, chatbot).  
 2. Auth **JWT** + **MongoDB**, **trois rôles**.  
 3. Architecture **MVVM**, **Swagger** (Flasgger).  
-4. Package **`phosalert-model`** (joblib, Hugging Face, heuristiques).  
+4. Package **`phosalert_model/`** (vendorisé, joblib, Hugging Face, heuristiques).  
 5. Réorganisation **`core/`**, **`presentation/`**, **`scripts/`**, **`data/`**.  
 6. Push GitHub, branche **`backend`**.  
 7. **Évolutions documentées ici** :  
