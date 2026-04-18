@@ -72,3 +72,7 @@ Simulated rows also include `date`, `zone_name`, `latitude`, `longitude` for nam
 3. In `services/copernicus_service.py` (or a small loader module), read the CSV with `pandas.read_csv`, pick the row nearest to the user’s coordinates or the Gulf sampling point, and expose **turbidity / chlorophyll / risk** in `GET /api/water-quality` instead of pure simulation when the file is present.
 
 Keep a fallback path so the API still returns JSON if the file is missing (same pattern as Open-Meteo / simulated data elsewhere in PhosAlert).
+
+---
+
+Repo : [hackathon-gabes](https://github.com/Souhaila4/hackathon-gabes) (branche `backend`).
