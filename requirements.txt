@@ -8,7 +8,5 @@ flasgger>=0.9.7
 
 # Package modèle (dossier frère ``../phosalert-model``). Depuis phosalert-backend :
 #   pip install -e ../phosalert-model
--e ../phosalert-model
-
 # Script Copernicus ``scripts/fetch_gabes_water.py`` (optionnel)
 -r requirements/gabes-water.txt
