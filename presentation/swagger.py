@@ -57,6 +57,18 @@ SWAGGER_TEMPLATE: dict = {
         {"name": "Eau", "description": "Qualité de l’eau"},
         {"name": "Prédiction", "description": "Risque irrigation"},
         {"name": "Chat", "description": "Assistant conversationnel"},
+        {
+            "name": "NAFAS",
+            "description": "Prévisions pollution 48h (LSTM) — Gabès / GCT",
+        },
+        {
+            "name": "Agriculture",
+            "description": "Recommandations par culture et liste d’adéquation spatiale",
+        },
+        {
+            "name": "Alertes",
+            "description": "Moteur d’alertes (air, eau, NAFAS, zones)",
+        },
     ],
 }
 

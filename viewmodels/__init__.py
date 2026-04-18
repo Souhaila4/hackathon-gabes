@@ -5,7 +5,17 @@ Les routes (View) appellent ces classes/fonctions et renvoient ``jsonify(...)``.
 """
 
 from viewmodels.auth_viewmodel import AuthViewModel
-from viewmodels.dashboard_viewmodel import DashboardViewModel
+from viewmodels.dashboard_viewmodel import (
+    DashboardViewModel,
+    build_dashboard_payload,
+    normalize_dashboard_role,
+)
 from viewmodels.map_viewmodel import MapZonesViewModel
 
-__all__ = ["AuthViewModel", "DashboardViewModel", "MapZonesViewModel"]
+__all__ = [
+    "AuthViewModel",
+    "DashboardViewModel",
+    "MapZonesViewModel",
+    "build_dashboard_payload",
+    "normalize_dashboard_role",
+]

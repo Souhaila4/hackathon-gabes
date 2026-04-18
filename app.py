@@ -2,7 +2,7 @@
 PhosAlert API — Flask gateway for Gabès air & water intelligence.
 
 Architecture MVVM (adaptée REST) :
-- **View** : ce fichier (handlers ``/health``, ``/api/map/zones``, ``/api/dashboard``) + ``routes/``
+- **View** : ce fichier (handlers ``/health``, ``/api/map/zones``) + ``routes/`` (dont ``/api/dashboard``)
 - **ViewModel** : ``viewmodels/``
 - **Model** : ``models/`` (constantes métier)
 - **Repository** : ``repositories/`` (MongoDB)
@@ -25,7 +25,7 @@ from flask_jwt_extended import verify_jwt_in_request
 from core.extensions import init_mongo, jwt
 from presentation.swagger import init_swagger, is_swagger_path
 from routes import register_routes
-from viewmodels import DashboardViewModel, MapZonesViewModel
+from viewmodels import MapZonesViewModel
 
 load_dotenv()
 
@@ -78,6 +78,10 @@ def create_app() -> Flask:
     CORS(app, resources={r"/*": {"origins": "*"}})
     register_routes(app)
 
+    from routes.alerts import alerts_bp
+
+    app.register_blueprint(alerts_bp, url_prefix="/api")
+
     @app.before_request
     def _optional_jwt_gate() -> None:
         """Si REQUIRE_JWT est activé, exige un JWT valide sur les routes API hors auth et health."""
@@ -91,6 +95,9 @@ def create_app() -> Flask:
         if path == "/health" or path.rstrip("/") == "/health":
             return None
         if path.startswith("/api/auth"):
+            return None
+        # Dashboard : JWT optionnel (rôle citoyen par défaut sans token)
+        if path.rstrip("/") == "/api/dashboard":
             return None
         if path.startswith("/api"):
             verify_jwt_in_request()
@@ -151,36 +158,19 @@ def create_app() -> Flask:
         payload, code = MapZonesViewModel().build_payload()
         return jsonify(payload), code
 
-    @app.get("/api/dashboard")
-    def dashboard():
-        """
-        Données agrégées pour l’écran d’accueil (air, eau, irrigation, tendances).
-        ---
-        tags:
-          - Dashboard
-        summary: Tableau de bord
-        security:
-          - Bearer: []
-        responses:
-          200:
-            description: Agrégat qualité air/eau, alertes, top zones
-          500:
-            description: Erreur serveur
-        """
-        payload, code = DashboardViewModel().build_payload()
-        return jsonify(payload), code
-
     init_swagger(app)
 
     return app
 
 
 def _print_registered_routes(app: Flask) -> None:
-    """Pretty-print HTTP paths for operators on startup."""
-    rows: list[tuple[str, str]] = []
+    """Pretty-print HTTP paths for operators on startup (une ligne par chemin, méthodes fusionnées)."""
+    from collections import defaultdict
+
+    merged: dict[str, set[str]] = defaultdict(set)
     for rule in app.url_map.iter_rules():
-        methods = ",".join(sorted(m for m in rule.methods if m not in ("HEAD", "OPTIONS")))
-        rows.append((rule.rule, methods))
+        merged[rule.rule] |= {m for m in rule.methods if m not in ("HEAD", "OPTIONS")}
+    rows = [(path, ",".join(sorted(methods))) for path, methods in merged.items()]
     rows.sort(key=lambda x: x[0])
     print("PhosAlert API — routes disponibles :")
     for path, methods in rows:
@@ -191,6 +181,34 @@ app = create_app()
 
 
 if __name__ == "__main__":
+    import socket
+
+    def find_free_port(preferred: int = 8080) -> int:
+        """Premier port libre à partir de ``preferred`` (jusqu'à +19)."""
+        for port in range(preferred, preferred + 20):
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    s.bind(("", port))
+                    return port
+            except OSError:
+                continue
+        return preferred + 20
+
     _print_registered_routes(app)
-    port = int(os.environ.get("PORT", "5000"))
-    app.run(host="0.0.0.0", port=port, debug=os.environ.get("FLASK_ENV") == "development")
+
+    if os.environ.get("PORT"):
+        port = int(os.environ["PORT"])
+    else:
+        port = find_free_port(8080)
+
+    print(f"\nStarting PhosAlert on port {port}")
+    print(f"   Local  : http://127.0.0.1:{port}")
+    print(f"   Network: http://0.0.0.0:{port}")
+    print(f"   Swagger: http://127.0.0.1:{port}/apidocs/\n")
+
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=port,
+        use_reloader=False,
+    )
