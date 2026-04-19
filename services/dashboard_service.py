@@ -333,23 +333,7 @@ def _generate_alerts_dynamic(
         )
         aid += 1
 
-    out = [a for a in alerts if role in a.get("roles", [])]
-    if not out:
-        out.append(
-            {
-                "id": 9900,
-                "type": "CONDITIONS_NORMAL",
-                "level": "INFO",
-                "color": "green",
-                "title_fr": (
-                    "Aucune alerte active : air, eau et indicateurs suivis sont "
-                    "sous les seuils d’attention pour ce relevé Gabès."
-                ),
-                "title_ar": "لا تنبيهات نشطة — المؤشرات ضمن الحدود لهذه اللقطة.",
-                "roles": [role],
-            }
-        )
-    return out
+    return [a for a in alerts if role in a.get("roles", [])]
 
 
 def _degrees_to_compass(deg: float) -> str:
