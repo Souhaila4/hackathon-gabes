@@ -18,7 +18,21 @@ cd phosalert-backend
 pip install -r requirements.txt
 ```
 
-Configurer `.env` (JWT, `MONGODB_URI`, etc.). Voir la doc travail pour `REQUIRE_JWT`, Swagger, Hugging Face.
+Configurer `.env` à partir de `.env.example` (JWT, MongoDB, etc.). **Ne committez pas** `.env`.
+
+### MongoDB Atlas + Railway
+
+1. Dans **Atlas** → *Database Access* : utilisateur avec mot de passe ; dans **Network Access** autorisez au minimum **`0.0.0.0/0`** (ou les IP sortantes de Railway si vous les fixez).
+2. Chaîne du type : `mongodb+srv://USER:PASSWORD@cluster.mongodb.net/?retryWrites=true&w=majority&appName=…`  
+   Si le mot de passe contient des caractères spéciaux (`@`, `#`, etc.), encodez-les en [percent-encoding](https://www.mongodb.com/docs/manual/reference/connection-string/).
+3. Sur **Railway** → Variables du service : `MONGODB_URI`, `MONGODB_DB_NAME` (identiques à votre cluster ; la base est choisie par `MONGODB_DB_NAME` côté code).
+4. Test local après copie de `.env` :
+
+```bash
+python scripts/check_mongo.py
+```
+
+Voir aussi la doc travail pour `REQUIRE_JWT`, Swagger, Hugging Face.
 
 ## Lancer le serveur
 
