@@ -12,6 +12,7 @@ from routes.nafas import bp as nafas_bp
 from routes.prediction import bp as predict_bp
 from routes.regulatory import bp as regulatory_bp
 from routes.water_quality import bp as water_bp
+from routes.wind_flow import bp as wind_flow_bp
 
 
 def register_routes(app) -> None:
@@ -25,6 +26,7 @@ def register_routes(app) -> None:
     app.register_blueprint(agriculture_bp, url_prefix="/api")
     app.register_blueprint(dashboard_bp, url_prefix="/api")
     app.register_blueprint(regulatory_bp, url_prefix="/api")
+    app.register_blueprint(wind_flow_bp, url_prefix="/api")
 
 
 __all__ = [
