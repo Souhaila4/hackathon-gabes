@@ -11,6 +11,10 @@ from services.dashboard_service import (
     build_chercheur_dashboard,
     build_citoyen_dashboard,
 )
+from services.industrial_authority_dashboard import (
+    build_autorite_dashboard,
+    build_industriel_dashboard,
+)
 
 bp = Blueprint("dashboard", __name__)
 
@@ -61,6 +65,10 @@ def get_dashboard():
             data = build_agriculteur_dashboard(crop=crop, lat=lat, lon=lon)
         elif role == "chercheur_scientifique":
             data = build_chercheur_dashboard()
+        elif role == "industriel":
+            data = build_industriel_dashboard()
+        elif role == "autorite":
+            data = build_autorite_dashboard()
         else:
             data = build_citoyen_dashboard()
 

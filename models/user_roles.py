@@ -4,17 +4,33 @@ from __future__ import annotations
 
 from typing import Literal
 
-UserRole = Literal["citoyen", "agriculteur", "chercheur_scientifique"]
+UserRole = Literal[
+    "citoyen",
+    "agriculteur",
+    "chercheur_scientifique",
+    "industriel",
+    "autorite",
+]
 
 DEFAULT_USER_ROLE: UserRole = "citoyen"
 
-VALID_USER_ROLES: frozenset[str] = frozenset({"citoyen", "agriculteur", "chercheur_scientifique"})
+VALID_USER_ROLES: frozenset[str] = frozenset(
+    {
+        "citoyen",
+        "agriculteur",
+        "chercheur_scientifique",
+        "industriel",
+        "autorite",
+    }
+)
 
 # Libellés pour UI / docs
 ROLE_LABELS_FR: dict[str, str] = {
     "citoyen": "Citoyen",
     "agriculteur": "Agriculteur",
     "chercheur_scientifique": "Chercheur scientifique",
+    "industriel": "Industriel (GCT)",
+    "autorite": "Autorité (ANPE / inspection)",
 }
 
 # Alias acceptés à l'inscription / mise à jour
@@ -24,6 +40,12 @@ _ROLE_ALIASES: dict[str, UserRole] = {
     "scientist": "chercheur_scientifique",
     "researcher": "chercheur_scientifique",
     "chercheur": "chercheur_scientifique",
+    "industrial": "industriel",
+    "gct": "industriel",
+    "industry": "industriel",
+    "authority": "autorite",
+    "anpe": "autorite",
+    "inspector": "autorite",
 }
 
 
