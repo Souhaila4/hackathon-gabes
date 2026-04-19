@@ -17,6 +17,8 @@ if str(_ROOT) not in sys.path:
 import phosalert_model as pm
 import requests
 
+from services.gabes_zone_scores import build_unified_zone_rows
+
 GABES_LAT = 33.8869
 GABES_LON = 10.0982
 GCT_LAT = 33.88
@@ -31,17 +33,6 @@ WHO_LIMITS_UGM3 = {
 
 AIR_QUALITY_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
 FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
-
-GABES_ZONES: list[dict[str, Any]] = [
-    {"id": 1, "name": "Zone GCT Ghannouch", "name_ar": "منطقة GCT غنوش", "lat": 33.88, "lon": 10.09, "base_risk": 90},
-    {"id": 2, "name": "Chott Essalem", "name_ar": "شط السالم", "lat": 33.87, "lon": 10.08, "base_risk": 60},
-    {"id": 3, "name": "Port de Gabès", "name_ar": "ميناء قابس", "lat": 33.895, "lon": 10.11, "base_risk": 40},
-    {"id": 4, "name": "Médina de Gabès", "name_ar": "مدينة قابس", "lat": 33.8869, "lon": 10.0982, "base_risk": 30},
-    {"id": 5, "name": "Zone Agricole Nord", "name_ar": "المنطقة الزراعية الشمالية", "lat": 33.95, "lon": 10.07, "base_risk": 20},
-    {"id": 6, "name": "Zone Agricole Sud", "name_ar": "المنطقة الزراعية الجنوبية", "lat": 33.82, "lon": 10.10, "base_risk": 20},
-    {"id": 7, "name": "Plage de Gabès", "name_ar": "شاطئ قابس", "lat": 33.90, "lon": 10.12, "base_risk": 35},
-    {"id": 8, "name": "Oasis de Gabès", "name_ar": "واحة قابس", "lat": 33.88, "lon": 10.06, "base_risk": 25},
-]
 
 
 def _hour_index(times: list[str]) -> int:
@@ -251,58 +242,12 @@ def _fetch_nafas_safe() -> dict[str, Any] | None:
         return None
 
 
-def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    return pm.haversine_km(lat1, lon1, lat2, lon2)
-
-
-def _bearing_deg(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    return pm.bearing_degrees(lat1, lon1, lat2, lon2)
-
-
 def _calculate_zones(air: dict[str, Any], wind: dict[str, Any]) -> list[dict[str, Any]]:
+    """Même liste et même score que ``GET /api/map/zones`` (voir ``gabes_zone_scores``)."""
     so2 = float(air["so2_ugm3"])
     wind_dir = float(wind["direction_deg"])
     wind_speed = float(wind["speed_kmh"])
-    zones_out: list[dict[str, Any]] = []
-
-    for zone in GABES_ZONES:
-        dist = _haversine_km(zone["lat"], zone["lon"], GCT_LAT, GCT_LON)
-        bearing = _bearing_deg(GCT_LAT, GCT_LON, zone["lat"], zone["lon"])
-        diff = abs(wind_dir - bearing)
-        if diff > 180:
-            diff = 360 - diff
-        downwind = diff < 45 and wind_speed > 5
-
-        wind_bonus = 25 if downwind else 0
-        so2_bonus = min(so2 / 3, 20)
-        dist_penalty = min(dist * 5, 30)
-
-        score = min(zone["base_risk"] + wind_bonus + so2_bonus - dist_penalty, 100)
-        score = max(score, 0)
-
-        if score >= 60:
-            level, color, safe = "DANGEROUS", "red", False
-        elif score >= 30:
-            level, color, safe = "MODERATE", "orange", False
-        else:
-            level, color, safe = "SAFE", "green", True
-
-        zones_out.append(
-            {
-                "id": zone["id"],
-                "name": zone["name"],
-                "name_ar": zone["name_ar"],
-                "latitude": zone["lat"],
-                "longitude": zone["lon"],
-                "risk_score": round(score),
-                "risk_level": level,
-                "color": color,
-                "is_safe": safe,
-                "is_downwind": downwind,
-                "distance_gct_km": round(dist, 2),
-            }
-        )
-    return zones_out
+    return build_unified_zone_rows(so2, wind_dir, wind_speed)
 
 
 def _generate_alerts_dynamic(
@@ -355,7 +300,7 @@ def _generate_alerts_dynamic(
                 "color": "red",
                 "title_fr": f"Eau côtière / fichier — turbidité moy. {water['turbidity_FNU']} FNU",
                 "title_ar": f"مياه ساحلية — عكارة {water['turbidity_FNU']} FNU",
-                "roles": ["citoyen", "agriculteur"],
+                "roles": ["citoyen", "agriculteur", "chercheur_scientifique"],
             }
         )
         aid += 1
@@ -383,12 +328,28 @@ def _generate_alerts_dynamic(
                 "color": "orange",
                 "title_fr": f"NH3: {nh3:.2f} µg/m³ — risque respiratoire",
                 "title_ar": f"NH3: {nh3:.2f} µg/m³",
-                "roles": ["citoyen"],
+                "roles": ["citoyen", "agriculteur", "chercheur_scientifique"],
             }
         )
         aid += 1
 
-    return [a for a in alerts if role in a.get("roles", [])]
+    out = [a for a in alerts if role in a.get("roles", [])]
+    if not out:
+        out.append(
+            {
+                "id": 9900,
+                "type": "CONDITIONS_NORMAL",
+                "level": "INFO",
+                "color": "green",
+                "title_fr": (
+                    "Aucune alerte active : air, eau et indicateurs suivis sont "
+                    "sous les seuils d’attention pour ce relevé Gabès."
+                ),
+                "title_ar": "لا تنبيهات نشطة — المؤشرات ضمن الحدود لهذه اللقطة.",
+                "roles": [role],
+            }
+        )
+    return out
 
 
 def _degrees_to_compass(deg: float) -> str:

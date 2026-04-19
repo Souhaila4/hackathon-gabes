@@ -1,17 +1,18 @@
-"""ViewModel carte : agrégation air/vent et marqueurs zones Gabès."""
+"""ViewModel carte : mêmes zones / scores que le dashboard, mêmes SO2/vent quand Open-Meteo répond."""
 
 from __future__ import annotations
 
 from datetime import datetime, timezone
 from typing import Any
 
-from models.gabes_zones import GABES_ZONES_SPEC
 import phosalert_model
 from services import openmeteo_service as owm
+from services.gabes_zone_scores import markers_for_map_payload
+from services.dashboard_service import _fetch_current_air, _fetch_wind
 
 
 def fetch_air_wind_bundle() -> tuple[dict[str, Any], dict[str, Any], str]:
-    """Open-Meteo + repli simulé (même logique qu’historiquement dans ``app``)."""
+    """Repli (snapshots + simulation) si les mêmes appels que le dashboard échouent."""
     aq, aq_ok = owm.fetch_air_quality_snapshot(phosalert_model.GABES_LAT, phosalert_model.GABES_LON)
     wind, wind_ok = owm.fetch_wind_snapshot(phosalert_model.GABES_LAT, phosalert_model.GABES_LON)
     data_source = "live"
@@ -26,37 +27,28 @@ def fetch_air_wind_bundle() -> tuple[dict[str, Any], dict[str, Any], str]:
     return aq, wind, data_source
 
 
-def build_zone_markers(so2: float, wind_from_deg: float) -> list[dict[str, Any]]:
-    zones_out: list[dict[str, Any]] = []
-    for z in GABES_ZONES_SPEC:
-        dist = phosalert_model.haversine_km(phosalert_model.GCT_LAT, phosalert_model.GCT_LON, float(z["latitude"]), float(z["longitude"]))
-        score = phosalert_model.zone_risk_score(
-            zone_lat=float(z["latitude"]),
-            zone_lon=float(z["longitude"]),
-            so2=so2,
-            wind_from_deg=wind_from_deg,
+def _so2_wind_for_map() -> tuple[float, float, float, str]:
+    """
+    Préfère les mêmes lectures air/vent que le dashboard (``_fetch_current_air`` + ``_fetch_wind``)
+    pour que les scores de la carte coïncident avec le tableau de bord.
+    """
+    try:
+        air = _fetch_current_air()
+        wind = _fetch_wind()
+        return (
+            float(air["so2_ugm3"]),
+            float(wind["direction_deg"]),
+            float(wind["speed_kmh"]),
+            "live",
         )
-        if score >= 70:
-            rlevel, color = "DANGEROUS", "red"
-        elif score >= 40:
-            rlevel, color = "MODERATE", "orange"
-        else:
-            rlevel, color = "SAFE", "green"
-
-        zones_out.append(
-            {
-                "id": z["id"],
-                "name": z["name"],
-                "latitude": z["latitude"],
-                "longitude": z["longitude"],
-                "risk_level": rlevel,
-                "risk_score": score,
-                "color": color,
-                "pollution_type": z["pollution_type"],
-                "distance_from_gct_km": round(dist, 3),
-            }
+    except Exception:  # noqa: BLE001
+        aq, wind, data_source = fetch_air_wind_bundle()
+        return (
+            float(aq.get("so2") or 0.0),
+            float(wind.get("wind_direction") or 0.0),
+            float(wind.get("wind_speed") or 0.0),
+            data_source,
         )
-    return zones_out
 
 
 class MapZonesViewModel:
@@ -64,11 +56,8 @@ class MapZonesViewModel:
 
     def build_payload(self) -> tuple[dict[str, Any], int]:
         try:
-            aq, wind, data_source = fetch_air_wind_bundle()
-            so2 = float(aq.get("so2") or 0.0)
-            wd = float(wind.get("wind_direction") or 0.0)
-            ws = float(wind.get("wind_speed") or 0.0)
-            zones_out = build_zone_markers(so2, wd)
+            so2, wd, ws, data_source = _so2_wind_for_map()
+            zones_out = markers_for_map_payload(so2, wd, ws)
             payload = {
                 "zones": zones_out,
                 "gct_location": {"latitude": 33.88, "longitude": 10.09},
